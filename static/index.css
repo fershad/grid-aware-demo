@@ -106,3 +106,7 @@ html[data-grid-aware="true"] {
 
   --code-bg: var(--stone-9);
 }
+
+a:visited {
+  color: currentColor;
+}
