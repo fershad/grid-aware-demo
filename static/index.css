@@ -105,6 +105,7 @@ html[data-grid-aware="true"] {
   --text: var(--sand-0);
 
   --code-bg: var(--stone-9);
+  font-family: var(--font-mono);
 }
 
 a,
