@@ -103,7 +103,6 @@ body {
 html[data-grid-aware="true"] {
   --background: var(--stone-10);
   --text: var(--sand-0);
-
   --code-bg: var(--stone-9);
   font-family: var(--font-mono);
 }
