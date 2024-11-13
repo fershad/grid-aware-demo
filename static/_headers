@@ -3,3 +3,15 @@
 
 /power-breakdown/index.html
   Content-Type: text/html
+
+/grid-intensity/
+  Content-Type: text/html
+
+/power-breakdown/
+  Content-Type: text/html
+
+/grid-intensity
+  Content-Type: text/html
+
+/power-breakdown
+  Content-Type: text/html
