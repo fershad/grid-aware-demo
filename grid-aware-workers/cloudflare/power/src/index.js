@@ -10,7 +10,7 @@
 
 import { gridAwarePower } from 'grid-aware-websites';
 import { cloudflare } from 'grid-aware-websites/plugins/edge';
-import { gridAwareRewriter } from '../../utils';
+import { gridAwareRewriter, regularRewriter } from '../../utils';
 
 export default {
 	async fetch(request, env, ctx) {
@@ -77,13 +77,9 @@ export default {
 			});
 		}
 
-		const addData = new HTMLRewriter().on('#data', {
-			element(element) {
-				element.setInnerContent(JSON.stringify(gridData, null, 2));
-			},
-		});
+		const rewriter = regularRewriter(gridData, "gridAwareCO2e");
 
-		return new Response(addData.transform(response).body, {
+		return new Response(rewriter.transform(response).body, {
 			...response,
 			contentType: 'text/html',
 			headers: {

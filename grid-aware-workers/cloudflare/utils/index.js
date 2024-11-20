@@ -58,8 +58,36 @@ export const gridAwareRewriter = (gridData, method) => {
         })
 }
 
+export const regularRewriter = (gridData, method) => {
+    return new HTMLRewriter()
+        .on('#data', {
+            element(element) {
+                element.setInnerContent(JSON.stringify(gridData, null, 2).trim());
+            },
+        })
+        .on('.platform', {
+            element(element) {
+                element.setInnerContent('Cloudflare Workers');
+            },
+        })
+        .on('#snippet', {
+            element(element) {
+                element.setInnerContent(cloudflareSnippet(method));
+            },
+        }).on('#code-link', {
+            element(element) {
+                let codeUrl = 'https://github.com/fershad/grid-aware-demo/blob/main/grid-aware-workers/cloudflare/co2e/src/index.js'
+                if (method === 'gridAwarePower') {
+                    codeUrl = 'https://github.com/fershad/grid-aware-demo/blob/main/grid-aware-workers/cloudflare/power/src/index.js'
+                }
+                element.before(`<a href="${codeUrl}" target="_blank">View the full code on GitHub</a>`, { html: true });
+            },
+        })
+}
+
 export const cloudflareSnippet = (method) => {
-    return `// Import the things we need from the grid-aware-websites library
+return `
+// Import the things we need from the grid-aware-websites library
 import { ${method} } from 'grid-aware-websites';
 import { cloudflare } from 'grid-aware-websites/plugins/edge';
 
