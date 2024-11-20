@@ -47,6 +47,14 @@ export const gridAwareRewriter = (gridData, method) => {
             element(element) {
                 element.setInnerContent(cloudflareSnippet(method));
             },
+        }).on('#code-link', {
+            element(element) {
+                let codeUrl = 'https://github.com/fershad/grid-aware-demo/blob/main/grid-aware-workers/cloudflare/co2e/src/index.js'
+                if (method === 'gridAwarePower') {
+                    codeUrl = 'https://github.com/fershad/grid-aware-demo/blob/main/grid-aware-workers/cloudflare/power/src/index.js'
+                }
+                element.before(`<a href="${codeUrl}" target="_blank">View the full code on GitHub</a>`, { html: true });
+            },
         })
 }
 
