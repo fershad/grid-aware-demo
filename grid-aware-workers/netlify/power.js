@@ -1,4 +1,6 @@
-export default async () => new Response("Hello, world!")
+export default async (request, context) => new Response(`Hello, world! From ${context.geo.country.code}`)
+
+
 
 export const config = {
   path: "/power-breakdown",
