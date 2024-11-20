@@ -57,7 +57,7 @@ export default {
 			// Create a new HTMLRewriter instance
 			// Also add a banner to the top of the page to show that this is a modified page
 
-			const rewriter = gridAwareRewriter(gridData);
+			const rewriter = gridAwareRewriter(gridData, "gridAwarePower");
 
 			// Return the response with the rewriter applied
 			return new Response(rewriter.transform(response).body, {

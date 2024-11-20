@@ -59,7 +59,7 @@ export default {
 		if (gridData.gridAware) {
 			// Create a new HTMLRewriter instance
 			// Also add a banner to the top of the page to show that this is a modified page
-			const rewriter = gridAwareRewriter(gridData);
+			const rewriter = gridAwareRewriter(gridData, "gridAwareCO2e");
 
 
 			// Return the response with the rewriter applied
