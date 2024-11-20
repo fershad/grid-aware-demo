@@ -128,3 +128,10 @@ img[data-grid-aware-src] + a {
 figure {
   text-align: center;
 }
+
+.grid-aware-img-placeholder {
+  display: block;
+  margin-inline: auto;
+  margin-block: 1.5rem;
+  background-color: var(--code-bg);
+}
