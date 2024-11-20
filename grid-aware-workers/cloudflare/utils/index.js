@@ -20,7 +20,7 @@ export const gridAwareRewriter = (gridData, method) => {
                 element.setInnerContent(JSON.stringify(gridData, null, 2).trim());
             },
         })
-        .on('#platform', {
+        .on('.platform', {
             element(element) {
                 element.setInnerContent('Cloudflare Workers');
             },
