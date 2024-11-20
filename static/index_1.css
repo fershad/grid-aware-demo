@@ -111,3 +111,20 @@ a,
 a:visited {
   color: var(--text);
 }
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+img[data-grid-aware-src] {
+  display: none;
+}
+
+img[data-grid-aware-src] + a {
+  margin-block: 1.5rem;
+}
+
+figure {
+  text-align: center;
+}
