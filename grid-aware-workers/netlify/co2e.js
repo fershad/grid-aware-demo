@@ -1,5 +1,5 @@
-import { gridAwareCO2e } from "https://esm.sh/@greenweb/grid-aware-websites@0.1.0";
-import { netlify } from "https://esm.sh/@greenweb/grid-aware-websites@0.1.0/plugins/edge";
+import { gridAwareCO2e } from "https://esm.sh/@greenweb/grid-aware-websites@0.1.1";
+import { netlify } from "https://esm.sh/@greenweb/grid-aware-websites@0.1.1/plugins/edge";
 import { gridAwareRewriter, regularRewriter } from "./utils/index.js";
 
 export default async (request, context) => {
