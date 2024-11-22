@@ -2,3 +2,5 @@ node_modules
 _site
 .vscode
 .dev.vars
+# Local Netlify folder
+.netlify
