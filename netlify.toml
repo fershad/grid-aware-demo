@@ -1,2 +1,5 @@
 [build]
 edge_functions = "grid-aware-workers/netlify"
+
+[functions]
+deno_import_map = "./grid-aware-workers/netlify/import-map.json"
