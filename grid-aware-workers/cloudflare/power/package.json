@@ -11,5 +11,8 @@
 	"devDependencies": {
 		"@cloudflare/vitest-pool-workers": "^0.5.2",
 		"wrangler": "^3.60.3"
+	},
+	"dependencies": {
+		"@greenweb/grid-aware-websites": "^0.1.0"
 	}
 }
