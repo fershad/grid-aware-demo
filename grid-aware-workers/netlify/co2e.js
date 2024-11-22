@@ -1,4 +1,4 @@
-import { gridAwarePower } from "https://esm.sh/@greenweb/grid-aware-websites@0.1.0";
+import { gridAwareCO2e } from "https://esm.sh/@greenweb/grid-aware-websites@0.1.0";
 import { netlify } from "https://esm.sh/@greenweb/grid-aware-websites@0.1.0/plugins/edge";
 import { gridAwareRewriter, regularRewriter } from "./utils/index.js";
 
@@ -16,7 +16,7 @@ export default async (request, context) => {
 			});
 		}
 
-    const gridData = await gridAwarePower(country, Netlify.env.get("EMAPS_API_KEY"));
+    const gridData = await gridAwareCO2e(country, Netlify.env.get("EMAPS_API_KEY"));
 
     if (gridData.status === 'error') {
 			const response = await context.next();
@@ -32,13 +32,13 @@ export default async (request, context) => {
 			// Create a new HTMLRewriter instance
 			// Also add a banner to the top of the page to show that this is a modified page
 
-			const rewriter = gridAwareRewriter(gridData, "gridAwarePower");
+			const rewriter = gridAwareRewriter(gridData, "gridAwareCO2e");
 
 			// Return the response with the rewriter applied
 			return rewriter.transform(await context.next());
 		}
     
-		const rewriter = regularRewriter(gridData, "gridAwarePower");
+		const rewriter = regularRewriter(gridData, "gridAwareCO2e");
 
 		return rewriter.transform(await context.next());
 }
@@ -46,6 +46,6 @@ export default async (request, context) => {
 
 
 export const config = {
-  path: "/power-breakdown",
+  path: "/grid-intensity",
   excludedPath: ["/static/*"],
 }
