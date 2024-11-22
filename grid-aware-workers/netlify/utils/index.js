@@ -90,89 +90,50 @@ export const regularRewriter = (gridData, method) => {
 export const netlifySnippet = (method) => {
 return `
 // Import the things we need from the grid-aware-websites library
-import { ${method} } from 'grid-aware-websites';
-import { cloudflare } from 'grid-aware-websites/plugins/edge';
+import { gridAwarePower } from "https://esm.sh/@greenweb/grid-aware-websites@0.1.0";
+import { netlify } from "https://esm.sh/@greenweb/grid-aware-websites@0.1.0/plugins/edge";
+import { gridAwareRewriter, regularRewriter } from "./utils/index.js";
 
-export default {
-    async fetch(request, env, ctx) {
-        // First fetch the request
-        const response = await fetch(request.url);
-        // Then check if the request content type is HTML. If not, return the request as is.
-        const contentType = response.headers.get('content-type');
+export default async (request, context) => {
+  let location = netlify.getLocation(context);
+	let { country } = location;
 
-        if (!contentType || !contentType.includes('text/html')) {
-            return new Response(response.body, {
-                ...response,
-            });
-        }
+    if (!country) {
+      const response = await context.next();
+			return new Response(response, {
+				headers: {
+					...response.headers,
+					'grid-aware': 'Error - Country not found',
+				},
+			});
+		}
 
-        // If the content type is HTML, we can then do the grid-aware checks, based on the user location.
-        // Here we use the country, but you could also use lat-lon.
-        let cfData = cloudflare.getLocation(request);
-        let { country } = cfData;
+    const gridData = await ${method}(country, Netlify.env.get("EMAPS_API_KEY"));
 
-        // If we can't get that information, return the response as it is.
-        // We also add a header to the response to show that the country was not found. (optional)
-        if (!country) {
-            return new Response(response.body, {
-                ...response,
-                headers: {
-                    ...response.headers,
-                    'grid-aware': 'Error - Country not found',
-                },
-            });
-        }
+    if (gridData.status === 'error') {
+			const response = await context.next();
+			return new Response(response, {
+				headers: {
+					'grid-aware': 'Error - Unable to fetch grid data',
+				},
+			});
+		}
 
-        // Fetch the grid data from Electricity Maps via the grid-aware-websites library
-        const gridData = await ${method}(country, 'AN_API_KEY_HERE');
+    // If the gridAware value is set to true, then we need to edit the "data-theme" attribute of the HTML tag to "dark" using the HTmlRewriter
+		if (gridData.gridAware) {
+			// Create a new HTMLRewriter instance
+			// Also add a banner to the top of the page to show that this is a modified page
 
-        // If the grid data status is error, return the response as is.
-        if (gridData.status === 'error') {
-            return new Response(response.body, {
-                ...response,
-                headers: {
-                    ...response.headers,
-                    'grid-aware': 'Error - Unable to fetch grid data',
-                },
-            });
-        }
+			const rewriter = gridAwareRewriter(gridData, "${method}");
 
-        // If the gridAware value is set to true, we add a data-grid-aware attribute to the HTML tag of the page using the HTMLRewriter
-        if (gridData.gridAware) {
-            const rewriter = new HTMLRewriter()
-                .on('html', {
-                    element(element) {
-                        element.setAttribute('data-grid-aware', 'true');
-                    },
-                })
-                
-                // ... Add more rewriter rules here. I have removed them for brevity.
+			// Return the response with the rewriter applied
+			return rewriter.transform(await context.next());
+		}
+    
+		const rewriter = regularRewriter(gridData, "${method}");
 
-            // Return the response with the rewriter applied
-            // You can also return some of the grid-aware data in the headers of the response if you want.
-            return new Response(rewriter.transform(response).body, {
-                ...response,
-                contentType: 'text/html',
-                headers: {
-                    ...response.headers,
-                    'grid-aware': 'true',
-                },
-            });
-        }
-
-
-        // Otherwise, if the gridAware value is false, we return the response as is.
-        // Again, we can add some headers to the response to show that the page is not grid-aware.
-        return new Response(addData.transform(response).body, {
-            ...response,
-            contentType: 'text/html',
-            headers: {
-                ...response.headers,
-                'grid-aware': 'false',
-            },
-        });
-    },
-};`
+		return rewriter.transform(await context.next());
+}`
 }
 
 export { gridAwareRewriter as default };
