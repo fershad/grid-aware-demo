@@ -77,7 +77,7 @@ export default {
 			});
 		}
 
-		const rewriter = regularRewriter(gridData, "gridAwareCO2e");
+		const rewriter = regularRewriter(gridData, "gridAwarePower");
 
 		return new Response(rewriter.transform(response).body, {
 			...response,
