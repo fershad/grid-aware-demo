@@ -20,5 +20,4 @@ This website is hosted on Cloudflare Pages, and has Cloudflare Workers running o
 
 [https://grid-aware-demo.netlify.app/](https://grid-aware-demo.netlify.app/)
 
-> [!Note]
-> This is still a work in progress.
+This website is hosted on Netlify, and uses their Edge Functions platform to run on the `/grid-intensity` and `/power-breakdown` routes. You can view the workers code for those routes at [`/grid-aware-workers/netlify`](/grid-aware-workers/netlify)
